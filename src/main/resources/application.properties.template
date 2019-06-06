@@ -1,0 +1,29 @@
+#Database server host url
+db.host=${db.host}
+
+#Database server port
+db.port=${db.port}
+
+#Database user
+db.user=${db.user}
+
+#Database password
+db.password=${db.password}
+
+#Database name where tables will be created
+db.database=${db.database}
+
+#Remove existing tables during start
+db.cleanup=${db.cleanup}
+
+#PRNG Batch size
+db.prng.maxBatchSize=${db.prng.maxBatchSize}
+
+#Number of random values generated per test
+prng.sampleSize=${prng.sampleSize}
+
+#Prefix of table to store generated prng values
+db.prng.tablePrefix = ${db.prng.tablePrefix}
+
+#Bitwise of random generated variable
+prng.variable.bitwise=${prng.variable.bitwise}

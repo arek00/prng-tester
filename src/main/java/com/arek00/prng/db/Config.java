@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 @Slf4j
 @Configuration
-public class PostgresConfig {
+public class Config {
 
     @Getter
     private final String host;
@@ -24,14 +24,14 @@ public class PostgresConfig {
     private final String password;
     @Getter
     private final String database;
-
+    @Getter
     private final Connection connection;
 
-    public PostgresConfig(@Value("${db.host}") String host,
-                          @Value("${db.port}") Integer port,
-                          @Value("${db.user}") String userName,
-                          @Value("${db.password}") String password,
-                          @Value("${db.database}") String database) {
+    public Config(@Value("${db.host}") String host,
+                  @Value("${db.port}") Integer port,
+                  @Value("${db.user}") String userName,
+                  @Value("${db.password}") String password,
+                  @Value("${db.database}") String database) {
         this.host = host;
         this.port = port;
         this.userName = userName;
@@ -40,27 +40,24 @@ public class PostgresConfig {
         this.connection = initializeConnection();
     }
 
-    @Bean("pg_connection")
-    public Connection connection() {
-        return connection;
-    }
-
     private Connection initializeConnection() {
         try {
-            final String uri = createJdbcConnectionUri(userName, password, database);
-            return DriverManager.getConnection(uri);
+            final String uri = createJdbcConnectionUri(host, port, database);
+            log.info("Connect to db: " + uri);
+            return DriverManager.getConnection(uri, userName, password);
         } catch (SQLException e) {
-            log.error("Could not initialize ");
+            log.error("Could not initialize. " + e.getMessage());
+            e.printStackTrace();
             System.exit(1);
         }
 
         throw new IllegalStateException("Illegal state of application. Connection should be returned or application exited.");
     }
 
-    private String createJdbcConnectionUri(final String user, final String password, final String database) {
+    private String createJdbcConnectionUri(final String host, final Integer port, final String database) {
         final String postgresUrlPattern = "jdbc:postgresql://%s:%s/%s";
 
-        return String.format(postgresUrlPattern, user, password, database);
+        return String.format(postgresUrlPattern, host, port, database);
     }
 }
 
