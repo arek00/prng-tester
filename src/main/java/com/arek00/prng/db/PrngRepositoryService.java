@@ -19,7 +19,7 @@ public class PrngRepositoryService {
 
     @Autowired
     public PrngRepositoryService(final PrngRepository repository,
-                                 @Value("${db.cleanup:false}") final boolean cleanUp) {
+                                 @Value("${db.cleanUpOnStart:false}") final boolean cleanUp) {
         this.repository = repository;
 
         if (cleanUp) {
@@ -37,7 +37,7 @@ public class PrngRepositoryService {
         }
     }
 
-    public void insertValues(final String tableName, final List<String> values) {
+    public void insertValues(final String tableName, final List<Long> values) {
         repository.insertRandomValues(tableName, values);
     }
 
@@ -52,8 +52,46 @@ public class PrngRepositoryService {
                 tableNames.add(rs.getString(TABLE_NAME_COLUMN));
             }
 
+            repository.dropTables(tableNames);
+
         } catch (SQLException e) {
             log.error("Problem during cleaning up database. " + e.getMessage());
         }
+    }
+
+    public void executeQuery(final String query) {
+        try {
+            repository.execute(query);
+        } catch (SQLException e) {
+            log.error("Could not execute query. " + e.getMessage());
+        }
+    }
+
+    public ResultSet executeWithResult(final String query) {
+        try {
+            return repository.executeWithResult(query);
+        } catch (SQLException e) {
+            log.error("Could not execute query. " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    public List<String> getTableNames(final String tableNamePattern) {
+        try {
+            final List<String> tableNames = new ArrayList<>();
+            final ResultSet resultSet = repository.getGeneratedTablesNames(tableNamePattern);
+
+            while (resultSet.next()) {
+                tableNames.add(resultSet.getString(TABLE_NAME_COLUMN));
+            }
+
+            return tableNames;
+
+        } catch (SQLException e) {
+            log.error("Error during get generated tables names. " + e.getMessage());
+        }
+
+        return new ArrayList<>();
     }
 }

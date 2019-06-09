@@ -27,3 +27,6 @@ db.prng.tablePrefix = ${db.prng.tablePrefix}
 
 #Bitwise of random generated variable
 prng.variable.bitwise=${prng.variable.bitwise}
+
+#Name of prng table value column
+db.prng.columnName=prng_value

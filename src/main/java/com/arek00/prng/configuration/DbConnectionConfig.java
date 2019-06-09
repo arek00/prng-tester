@@ -1,9 +1,8 @@
-package com.arek00.prng.db;
+package com.arek00.prng.configuration;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.sql.Connection;
@@ -12,7 +11,7 @@ import java.sql.SQLException;
 
 @Slf4j
 @Configuration
-public class Config {
+public class DbConnectionConfig {
 
     @Getter
     private final String host;
@@ -27,11 +26,11 @@ public class Config {
     @Getter
     private final Connection connection;
 
-    public Config(@Value("${db.host}") String host,
-                  @Value("${db.port}") Integer port,
-                  @Value("${db.user}") String userName,
-                  @Value("${db.password}") String password,
-                  @Value("${db.database}") String database) {
+    public DbConnectionConfig(@Value("${db.host}") String host,
+                              @Value("${db.port}") Integer port,
+                              @Value("${db.user}") String userName,
+                              @Value("${db.password}") String password,
+                              @Value("${db.database}") String database) {
         this.host = host;
         this.port = port;
         this.userName = userName;
