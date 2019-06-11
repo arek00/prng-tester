@@ -26,7 +26,7 @@ public class PrngValuesGenerationTask {
     }
 
     public List<String> run(final RandomGenerator rng) {
-       return generationLoop(rng, config.getTablesNumber(), config.getSampleSize(), config.getBatchSize());
+        return generationLoop(rng, config.getTablesNumber(), config.getSampleSize(), config.getBatchSize());
     }
 
     private List<String> generationLoop(final RandomGenerator rng, final int tablesNumber, final int sampleSize, final int maxBatchSize) {
@@ -39,7 +39,9 @@ public class PrngValuesGenerationTask {
             service.createPrngTable(tableName);
             tables.add(tableName);
 
-            singleTableGenerationLoop(rng, sampleSize, maxBatchSize, tableName);
+            if (!config.getOnlyTests()) {
+                singleTableGenerationLoop(rng, sampleSize, maxBatchSize, tableName);
+            }
         });
 
         return tables;

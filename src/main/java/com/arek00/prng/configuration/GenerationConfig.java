@@ -1,12 +1,17 @@
 package com.arek00.prng.configuration;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Getter
+@ToString
 public class GenerationConfig {
+
+    @Value("${db.prng.onlyTests:true}")
+    private Boolean onlyTests;
 
     @Value("${db.prng.batchSize:1000}")
     private Integer batchSize;

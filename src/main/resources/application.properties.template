@@ -1,32 +1,44 @@
 #Database server host url
-db.host=${db.host}
+db.host=${HOST}
 
 #Database server port
-db.port=${db.port}
+db.port=${PORT}
 
 #Database user
-db.user=${db.user}
+db.user=${USER}
 
 #Database password
-db.password=${db.password}
+db.password=${PASSWORD}
 
 #Database name where tables will be created
-db.database=${db.database}
+db.database=${DB_NAME}
 
 #Remove existing tables during start
-db.cleanup=${db.cleanup}
+db.cleanUpOnStart=${CLEAN}
 
-#PRNG Batch size
-db.prng.maxBatchSize=${db.prng.maxBatchSize}
+#Size of batch insert to database
+db.prng.batchSize=${BATCH_SIZE}
 
-#Number of random values generated per test
-prng.sampleSize=${prng.sampleSize}
+#Number of generated random values per table
+db.prng.sampleSize=${SAMPLE_SIZE}
 
-#Prefix of table to store generated prng values
-db.prng.tablePrefix = ${db.prng.tablePrefix}
+#Number of tables to generate
+db.prng.tablesNumber=${TABLES_NUMBER}
 
-#Bitwise of random generated variable
-prng.variable.bitwise=${prng.variable.bitwise}
+#Prefix of table name
+db.prng.tablePrefix=${TABLE_PREFIX}
 
 #Name of prng table value column
-db.prng.columnName=prng_value
+db.prng.columnName=${COLUMN_NAME}
+
+#Bitwise of random value
+db.prng.variable.bitwise=${BITWISE}
+
+db.prng.onlyTests=${TESTS_ONLY}
+
+#Prime bits
+prng.primeBits=${PRIME_BITS}
+
+reports.duplicationTest.dir=${OUTPUT_DIR}
+
+tests.duplication.bucketsNumber=${TEST_BUCKETS}

@@ -19,10 +19,11 @@ public class PrngRepositoryService {
 
     @Autowired
     public PrngRepositoryService(final PrngRepository repository,
-                                 @Value("${db.cleanUpOnStart:false}") final boolean cleanUp) {
+                                 @Value("${db.cleanUpOnStart:false}") final boolean cleanUp,
+                                 @Value("${db.prng.onlyTests:true}") final boolean onlyTests) {
         this.repository = repository;
 
-        if (cleanUp) {
+        if (cleanUp && !onlyTests) {
             cleanUpTables();
         }
     }

@@ -15,7 +15,7 @@ import static com.arek00.prng.utils.OutputFileCreator.createFile;
 import static com.arek00.prng.utils.OutputFileCreator.withExtension;
 
 @Slf4j
-public class DuplicationTest implements PrngTest {
+public class DuplicationTest extends AbstractPrngTest {
 
     private static final String OUTPUT_DIRECTORY = "duplication";
 
@@ -26,27 +26,16 @@ public class DuplicationTest implements PrngTest {
                     "HAVING count(%1$s) > 1 " +
                     "ORDER BY count(%1$s) DESC;";
 
-    private final PrngRepositoryService repositoryService;
-
     public DuplicationTest(final PrngRepositoryService service) {
-        this.repositoryService = service;
+        super(service, OUTPUT_DIRECTORY);
     }
 
-    public void runTest(final String tableName, final GenerationConfig config, final String outputDir) {
-        final String columnName = config.getColumnName();
-        final String query = String.format(QUERY_PATTERN, columnName, tableName);
-        final ResultSet resultSet = repositoryService.executeWithResult(query);
-        writeCsv(resultSet, tableName, outputDir);
-    }
+    @Override
+    protected String createQuery(String tableName, GenerationConfig config, String outputDir) {
+        log.info("Start performing duplication test.");
+        log.info("Table: " + tableName + " output directory: " + outputDir + "\n" +
+                "Config: " + config.toString());
 
-    private void writeCsv(final ResultSet resultSet, final String tableName, final String outputDir) {
-        try {
-            final File outputFile = createFile(outputDir, OUTPUT_DIRECTORY, withExtension(tableName, "csv"));
-            CsvWriter.writeResultSet(resultSet, outputFile);
-        } catch (SQLException | IOException e) {
-            log.error(e.getMessage());
-            e.printStackTrace();
-        }
+        return String.format(QUERY_PATTERN, config.getColumnName(), tableName);
     }
-
 }

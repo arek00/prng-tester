@@ -2,6 +2,7 @@ package com.arek00.prng.test;
 
 import com.arek00.prng.configuration.GenerationConfig;
 import com.arek00.prng.db.PrngRepositoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class TestsService {
 
     private final PrngRepositoryService repositoryService;
@@ -35,11 +37,10 @@ public class TestsService {
     private List<PrngTest> initializeTests(final TestsConfig testsConfig, final PrngRepositoryService service) {
         final List<PrngTest> tests = new ArrayList<>();
 
-        final DuplicationTest duplicationTest = new DuplicationTest(service);
-        final DistributionTest distributionTest = new DistributionTest(repositoryService, testsConfig.getBucketsNumber());
-
-        tests.add(duplicationTest);
-        tests.add(distributionTest);
+        tests.add(new DuplicationTest(service));
+        tests.add(new DistributionTest(service));
+        tests.add(new ChiSquaredTest(service));
+        tests.add(new RunTest(service));
 
         return tests;
     }

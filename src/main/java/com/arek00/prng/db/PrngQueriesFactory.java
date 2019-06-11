@@ -9,7 +9,7 @@ public class PrngQueriesFactory {
     @Getter
     private static final String columnName = "prng_value";
 
-    public String createTableQuery(final String tableName) {
+        public String createTableQuery(final String tableName) {
         final String pattern = "CREATE TABLE IF NOT EXISTS %s (\n" +
                 "id SERIAL PRIMARY KEY,\n" +
                 "%s BIGINT);";
